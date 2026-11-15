@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#F4EEE4">
+  <meta name="description" content="See how much profit each AI workflow really makes. Runs on your device, nothing is sent anywhere.">
+  <title>AI Agent Profitability Calculator</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="blob blob-c"></span>
+    <span class="grain"></span>
+  </div>
+
+  <a class="skip-link" href="#editor">Skip to the workflow editor</a>
+
+  <header class="topbar">
+    <div class="topbar-inner glass">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <rect width="64" height="64" rx="18" fill="currentColor"/>
+          <circle cx="32" cy="32" r="16" fill="none" stroke="#5B4031" stroke-width="6"/>
+          <circle cx="32" cy="32" r="16" fill="none" stroke="#F4EEE4" stroke-width="6" stroke-linecap="round" stroke-dasharray="67 100.5" transform="rotate(-90 32 32)"/>
+        </svg>
+        <div class="brand-text">
+          <h1>AI Agent Profitability Calculator</h1>
+          <p class="privacy" id="privacy-note">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="5" y="10" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+            <span id="privacy-text">Everything stays on this device</span>
+          </p>
+        </div>
+      </div>
+
+      <nav class="toolbar" aria-label="File actions">
+        <button class="btn btn-ghost" type="button" id="btn-import" data-feedback="none">
+          <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14" /></svg>Import</span>
+        </button>
+        <button class="btn btn-ghost" type="button" id="btn-export-json">
+          <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4m0 0L8 8m4-4 4 4M5 19h14" /></svg>Export JSON</span>
+        </button>
+        <button class="btn btn-ghost" type="button" id="btn-export-csv">
+          <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 10h16M10 10v9" /></svg>Export CSV</span>
+        </button>
+        <button class="btn btn-ghost" type="button" id="btn-print">
+          <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2M7 14h10v6H7z" /></svg>Print summary</span>
+        </button>
+        <button class="btn btn-ghost btn-icon" type="button" id="btn-settings" aria-label="Settings" title="Settings" data-feedback="none">
+          <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" /><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></span>
+        </button>
+        <div class="menu-wrap">
+          <button class="btn btn-ghost btn-icon" type="button" id="btn-more" aria-label="More actions" title="More actions" aria-haspopup="true" aria-expanded="false" aria-controls="more-menu" data-feedback="none">
+            <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg></span>
+          </button>
+          <div class="menu glass" id="more-menu" role="menu" hidden>
+            <button type="button" role="menuitem" id="btn-load-sample">Load the sample workflows</button>
+            <button type="button" role="menuitem" id="btn-reset">Start empty</button>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell" id="main">
+    <section class="summary" aria-label="Portfolio summary">
+      <article class="stat glass">
+        <p class="eyebrow">Total revenue</p>
+        <p class="stat-value" id="sum-revenue" data-format="money">0</p>
+        <p class="stat-sub" id="sum-revenue-sub">per month</p>
+      </article>
+      <article class="stat glass">
+        <p class="eyebrow">Delivery cost</p>
+        <p class="stat-value" id="sum-delivery" data-format="money">0</p>
+        <p class="stat-sub" id="sum-delivery-sub">model, tools and people</p>
+      </article>
+      <article class="stat glass">
+        <p class="eyebrow">Gross profit</p>
+        <p class="stat-value" id="sum-profit" data-format="money">0</p>
+        <p class="stat-sub" id="sum-profit-sub">what you keep each month</p>
+      </article>
+      <article class="stat stat-gauge glass" id="sum-gauge-card">
+        <div class="gauge-text">
+          <p class="eyebrow">Portfolio margin</p>
+          <p class="stat-value" id="sum-margin" data-format="percent">0</p>
+          <p class="stat-sub" id="sum-margin-sub">target 60%, warning 50%</p>
+        </div>
+        <div class="ring ring-lg" id="sum-ring" role="img" aria-label="Portfolio margin"></div>
+      </article>
+    </section>
+
+    <p class="insight" id="insight" aria-live="polite"></p>
+
+    <div class="workspace">
+      <section class="list-pane" aria-labelledby="list-title">
+        <div class="pane-head">
+          <h2 id="list-title">Workflows <span class="count" id="wf-count"></span></h2>
+          <button class="btn btn-primary btn-sm" type="button" id="btn-add">
+            <span class="btn-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>Add workflow</span>
+          </button>
+        </div>
+        <ul class="wf-list" id="workflow-list" aria-label="Workflow list"></ul>
+        <div class="empty glass" id="empty-state" hidden>
+          <p class="empty-title">No workflows yet</p>
+          <p>Add your first AI workflow, or load the three sample workflows to see how it works.</p>
+          <div class="empty-actions">
+            <button class="btn btn-primary btn-sm" type="button" id="btn-add-empty"><span class="btn-label">Add workflow</span></button>
+            <button class="btn btn-ghost btn-sm" type="button" id="btn-sample-empty"><span class="btn-label">Load sample</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="editor glass" id="editor" tabindex="-1" aria-label="Workflow editor"></section>
+    </div>
+
+    <footer class="foot">
+      <p>Token prices in the sample are example rates. Replace them with your provider's current price per 1M tokens. Sample clients and numbers are fictional.</p>
+      <p>Version 1.0.0. Free and open source under the MIT licence. No accounts, no tracking, no network calls.</p>
+    </footer>
+  </main>
+
+  <section class="print-sheet" id="print-sheet" aria-hidden="true"></section>
+
+  <div class="toasts" id="toasts" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+  <dialog class="dialog glass" id="settings-dialog" aria-labelledby="settings-title">
+    <form method="dialog" id="settings-form" novalidate>
+      <h2 id="settings-title">Settings</h2>
+      <p class="dialog-sub">These apply to every workflow.</p>
+      <div class="field">
+        <label for="set-currency">Currency</label>
+        <input id="set-currency" name="currency" type="text" autocomplete="off" spellcheck="false" maxlength="5" aria-describedby="set-currency-hint">
+        <p class="hint" id="set-currency-hint">A code like USD, EUR, GBP, INR, or a symbol.</p>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="set-target">Target margin</label>
+          <div class="input-wrap has-suffix"><input id="set-target" name="target" type="text" inputmode="decimal" autocomplete="off"><span class="suffix">%</span></div>
+          <p class="hint error-text" id="set-target-error" hidden></p>
+        </div>
+        <div class="field">
+          <label for="set-warning">Warning margin</label>
+          <div class="input-wrap has-suffix"><input id="set-warning" name="warning" type="text" inputmode="decimal" autocomplete="off"><span class="suffix">%</span></div>
+          <p class="hint error-text" id="set-warning-error" hidden></p>
+        </div>
+      </div>
+      <p class="hint">A workflow turns red under the warning margin, and orange under the target.</p>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" type="button" id="settings-cancel" data-feedback="none"><span class="btn-label">Cancel</span></button>
+        <button class="btn btn-primary" type="button" id="settings-save"><span class="btn-label">Save settings</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialog glass" id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-text">
+    <form method="dialog">
+      <h2 id="confirm-title">Are you sure?</h2>
+      <p class="dialog-sub" id="confirm-text"></p>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" value="cancel" data-feedback="none"><span class="btn-label">Cancel</span></button>
+        <button class="btn btn-primary" value="ok" id="confirm-ok" data-feedback="none"><span class="btn-label">Confirm</span></button>
+      </div>
+    </form>
+  </dialog>
+
+  <input type="file" id="import-file" accept=".json,application/json" hidden>
+
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

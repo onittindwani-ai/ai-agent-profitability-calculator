@@ -1,0 +1,112 @@
+{
+  "source": "data/sample-workflows.json",
+  "note": "Expected results for the fictional sample workflows. Money to the cent, margins as shares. Both test suites assert these numbers.",
+  "settings": { "currency": "USD", "target_margin": 0.6, "warning_margin": 0.5 },
+  "workflows": {
+    "ai-sdr-outbound": {
+      "revenue_monthly": 1500,
+      "model_base": 150.00,
+      "retry_cost": 30.00,
+      "model_cost": 180.00,
+      "infrastructure_monthly": 70,
+      "tools_monthly": 100,
+      "review_cost": 100.00,
+      "maintenance_cost": 50.00,
+      "agent_costs": 320.00,
+      "hidden_costs": 180.00,
+      "delivery_cost": 500.00,
+      "gross_profit": 1000.00,
+      "gross_margin": 0.666667,
+      "model_share": 0.36,
+      "cost_per_run": 0.50,
+      "break_even_price": 500.00,
+      "price_for_target": 1250.00,
+      "status": "green",
+      "outcomes": [
+        { "name": "Qualified leads", "cost_per_outcome": 12.50, "revenue_per_outcome": 37.50, "profit_per_outcome": 25.00 },
+        { "name": "Booked meetings", "cost_per_outcome": 50.00, "revenue_per_outcome": 150.00, "profit_per_outcome": 100.00 }
+      ],
+      "recommendation_ids": ["retries_high", "chatty_agents"]
+    },
+    "ai-voice-follow-ups": {
+      "revenue_monthly": 800,
+      "model_base": 115.20,
+      "retry_cost": 34.56,
+      "model_cost": 149.76,
+      "infrastructure_monthly": 180,
+      "tools_monthly": 60,
+      "review_cost": 75.00,
+      "maintenance_cost": 50.00,
+      "agent_costs": 355.20,
+      "hidden_costs": 159.56,
+      "delivery_cost": 514.76,
+      "gross_profit": 285.24,
+      "gross_margin": 0.35655,
+      "model_share": 0.290932,
+      "cost_per_run": 0.86,
+      "break_even_price": 514.76,
+      "price_for_target": 1286.90,
+      "status": "red",
+      "outcomes": [
+        { "name": "Booked meetings", "cost_per_outcome": 34.32, "revenue_per_outcome": 53.33, "profit_per_outcome": 19.02 }
+      ],
+      "recommendation_ids": ["margin_below_warning", "retries_high", "chatty_agents", "review_heavy", "use_simple_automation"]
+    },
+    "inbox-reply-agent": {
+      "revenue_monthly": 1000,
+      "model_base": 40.50,
+      "retry_cost": 4.05,
+      "model_cost": 44.55,
+      "infrastructure_monthly": 30,
+      "tools_monthly": 40,
+      "review_cost": 50.00,
+      "maintenance_cost": 25.00,
+      "agent_costs": 110.50,
+      "hidden_costs": 79.05,
+      "delivery_cost": 189.55,
+      "gross_profit": 810.45,
+      "gross_margin": 0.81045,
+      "model_share": 0.235030,
+      "cost_per_run": 0.13,
+      "break_even_price": 189.55,
+      "price_for_target": 473.88,
+      "status": "green",
+      "outcomes": [
+        { "name": "Replies handled", "cost_per_outcome": 1.58, "revenue_per_outcome": 8.33, "profit_per_outcome": 6.75 }
+      ],
+      "recommendation_ids": ["healthy"]
+    }
+  },
+  "portfolio": {
+    "total_revenue": 3300.00,
+    "total_delivery_cost": 1204.31,
+    "total_gross_profit": 2095.69,
+    "portfolio_margin": 0.635058,
+    "red_count": 1,
+    "most_profitable_id": "inbox-reply-agent",
+    "least_profitable_id": "ai-voice-follow-ups"
+  },
+  "display": {
+    "ai-sdr-outbound": { "gross_margin": "66.7%" },
+    "ai-voice-follow-ups": { "gross_margin": "35.7%" },
+    "inbox-reply-agent": { "gross_margin": "81.0%" },
+    "portfolio": { "portfolio_margin": "63.5%" }
+  },
+  "edge_cases": {
+    "override": {
+      "input": { "model_cost_override": 240, "retry_rate": 0.2 },
+      "base_workflow": "ai-sdr-outbound",
+      "expected": { "model_cost": 240.00, "model_base": 200.00, "retry_cost": 40.00, "delivery_cost": 560.00, "gross_profit": 940.00 }
+    },
+    "zero_revenue": {
+      "input": { "revenue_monthly": 0 },
+      "base_workflow": "inbox-reply-agent",
+      "expected": { "gross_margin": null, "delivery_cost": 189.55, "gross_profit": -189.55 }
+    },
+    "zero_outcomes": {
+      "input": { "outcomes": [ { "name": "Replies handled", "count": 0 } ] },
+      "base_workflow": "inbox-reply-agent",
+      "expected": { "cost_per_outcome": null, "revenue_per_outcome": null, "profit_per_outcome": null }
+    }
+  }
+}

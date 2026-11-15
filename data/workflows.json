@@ -1,0 +1,77 @@
+{
+  "currency": "USD",
+  "target_margin": 0.6,
+  "warning_margin": 0.5,
+  "workflows": [
+    {
+      "id": "ai-sdr-outbound",
+      "name": "AI SDR outbound campaign",
+      "client": "Sample client A (fictional)",
+      "revenue_monthly": 1500,
+      "runs_monthly": 1000,
+      "agent_calls_per_run": 5,
+      "input_tokens_per_call": 3000,
+      "output_tokens_per_call": 1400,
+      "price_input_per_million": 3,
+      "price_output_per_million": 15,
+      "retry_rate": 0.2,
+      "model_cost_override": null,
+      "infrastructure_monthly": 70,
+      "tools_monthly": 100,
+      "review_hours": 4,
+      "maintenance_hours": 2,
+      "hourly_rate": 25,
+      "rule_based": false,
+      "outcomes": [
+        { "name": "Qualified leads", "count": 40 },
+        { "name": "Booked meetings", "count": 10 }
+      ]
+    },
+    {
+      "id": "ai-voice-follow-ups",
+      "name": "AI voice follow ups",
+      "client": "Sample client B (fictional)",
+      "revenue_monthly": 800,
+      "runs_monthly": 600,
+      "agent_calls_per_run": 8,
+      "input_tokens_per_call": 3000,
+      "output_tokens_per_call": 1000,
+      "price_input_per_million": 3,
+      "price_output_per_million": 15,
+      "retry_rate": 0.3,
+      "model_cost_override": null,
+      "infrastructure_monthly": 180,
+      "tools_monthly": 60,
+      "review_hours": 3,
+      "maintenance_hours": 2,
+      "hourly_rate": 25,
+      "rule_based": true,
+      "outcomes": [
+        { "name": "Booked meetings", "count": 15 }
+      ]
+    },
+    {
+      "id": "inbox-reply-agent",
+      "name": "Inbox reply agent",
+      "client": "Sample client C (fictional)",
+      "revenue_monthly": 1000,
+      "runs_monthly": 1500,
+      "agent_calls_per_run": 2,
+      "input_tokens_per_call": 2000,
+      "output_tokens_per_call": 500,
+      "price_input_per_million": 3,
+      "price_output_per_million": 15,
+      "retry_rate": 0.1,
+      "model_cost_override": null,
+      "infrastructure_monthly": 30,
+      "tools_monthly": 40,
+      "review_hours": 2,
+      "maintenance_hours": 1,
+      "hourly_rate": 25,
+      "rule_based": false,
+      "outcomes": [
+        { "name": "Replies handled", "count": 120 }
+      ]
+    }
+  ]
+}
